@@ -86,6 +86,8 @@ history = model.fit(
     verbose=1,  # turn off training log
 )
 print('[INFO] Model Training Completed')
-model_name = os.path.splitext(path_to_save)[0] + f'min_{min_}_max_{max_}.h5'
+save_dir = os.path.split(path_to_save)[0]
+model_name = os.path.split(path_to_save)[1]
+model_name = os.path.splitext(model_name)[0] + f'min_{min_}_max_{max_}.h5'
 model.save(model_name)
 print(f'[INFO] Successfully Saved {path_to_save}')
