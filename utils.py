@@ -52,6 +52,6 @@ def NormPoseLandmark(landmark_names, landmarks):
     landmarks /= pose_size
 
     # Multiplication by 100 is not required, but makes it eaasier to debug.
-    landmarks *= 100
+    # landmarks *= 100
 
     return landmarks
