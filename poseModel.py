@@ -28,11 +28,11 @@ df_train = df.sample(frac=0.8, random_state=0)
 df_valid = df.drop(df_train.index)
 
 
-# Scale to [0, 1]
-max_ = df_train.max(axis=0)
-min_ = df_train.min(axis=0)
-df_train = (df_train - min_) / (max_ - min_)
-df_valid = (df_valid - min_) / (max_ - min_)
+# # Scale to [0, 1]
+# max_ = df_train.max(axis=0)
+# min_ = df_train.min(axis=0)
+# df_train = (df_train - min_) / (max_ - min_)
+# df_valid = (df_valid - min_) / (max_ - min_)
 
 # Split features and target
 x_train = df_train.drop('Pose_Class', axis=1)
@@ -86,8 +86,10 @@ history = model.fit(
     verbose=1,  # turn off training log
 )
 print('[INFO] Model Training Completed')
+val_loss = history.history['val_loss'][-1]
 save_dir = os.path.split(path_to_save)[0]
 model_name = os.path.split(path_to_save)[1]
-model_name = os.path.splitext(model_name)[0] + f'min_{min_}_max_{max_}.h5'
-model.save(model_name)
+model_name = os.path.splitext(model_name)[0] + f'_val_loss_{val_loss:.3}.h5'
+path_to_save = os.path.join(save_dir, model_name)
+model.save(path_to_save)
 print(f'[INFO] Successfully Saved {path_to_save}')
