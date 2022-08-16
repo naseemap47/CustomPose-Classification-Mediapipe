@@ -1,6 +1,9 @@
+import keras
 import pandas as pd
-from keras import layers, callbacks, Sequential
+from keras import layers, Sequential
 import argparse
+from sklearn.model_selection import train_test_split
+from matplotlib import pyplot as plt
 import os
 
 
@@ -15,7 +18,6 @@ args = vars(ap.parse_args())
 path_csv = args["dataset"]
 path_to_save = args["save"]
 
-
 # Load .csv Data
 df = pd.read_csv(path_csv)
 class_list = df['Pose_Class'].unique()
@@ -23,73 +25,81 @@ class_list = sorted(class_list)
 class_number = len(class_list)
 
 # Create training and validation splits
-df['Pose_Class'], _ = df['Pose_Class'].factorize()
-df_train = df.sample(frac=0.8, random_state=0)
-df_valid = df.drop(df_train.index)
+x = df.copy()
+y = x.pop('Pose_Class')
+y, _ = y.factorize()
+x = x.astype('float64')
+y = keras.utils.to_categorical(y)
 
-
-# # Scale to [0, 1]
-# max_ = df_train.max(axis=0)
-# min_ = df_train.min(axis=0)
-# df_train = (df_train - min_) / (max_ - min_)
-# df_valid = (df_valid - min_) / (max_ - min_)
-
-# Split features and target
-x_train = df_train.drop('Pose_Class', axis=1)
-x_test = df_valid.drop('Pose_Class', axis=1)
-y_train = df_train['Pose_Class']
-y_test = df_valid['Pose_Class']
+x_train, x_test, y_train, y_test = train_test_split(x, y,
+                                                    test_size=0.2,
+                                                    random_state=0)
 
 print('[INFO] Loaded csv Dataset')
 
-early_stopping = callbacks.EarlyStopping(
-    monitor='val_loss',
-    mode='min',
-    min_delta=0.0001,  # minimium amount of change to count as an improvement
-    patience=30,  # how many epochs to wait before stopping
-    restore_best_weights=True,
-    verbose=1
-)
-
 model = Sequential([
-    layers.Dense(128, activation='relu', input_shape=[99]),
-    # layers.Dense(128, activation='relu'),
+    layers.Dense(512, activation='relu', input_shape=[x_train.shape[1]]),
     layers.Dense(256, activation='relu'),
-    # layers.Dense(512, activation='relu'),
-    # layers.Dense(1024, activation='relu'),
-    # layers.Dense(2048, activation='relu'),
-    # layers.Dense(4096, activation='relu'),
-    # layers.Dense(4096, activation='relu'),
-    # layers.Dense(2048, activation='relu'),
-    # layers.Dense(1024, activation='relu'),
-    layers.Dense(128, activation='relu'),
-    # layers.Dense(class_number),
-    layers.Dense(class_number)
+    layers.Dense(class_number, activation="softmax")
 ])
 
 # Model Summary
-print(model.summary())
+print('Model Summary: ', model.summary())
 
 model.compile(
     optimizer='adam',
-    loss='mae',
+    loss='categorical_crossentropy',
+    metrics=['accuracy']
 )
 
+# Add a checkpoint callback to store the checkpoint that has the highest
+# validation accuracy.
+checkpoint_path = path_to_save
+checkpoint = keras.callbacks.ModelCheckpoint(checkpoint_path,
+                                             monitor='val_accuracy',
+                                             verbose=1,
+                                             save_best_only=True,
+                                             mode='max')
+earlystopping = keras.callbacks.EarlyStopping(monitor='val_accuracy',
+                                              patience=20)
+
 print('[INFO] Model Training Started ...')
-# Train the Model
-history = model.fit(
-    x_train, y_train,
-    validation_data=(x_test, y_test),
-    batch_size=32,
-    epochs=500,
-    callbacks=[early_stopping],  # put your callbacks in a list
-    verbose=1,  # turn off training log
-)
+# Start training
+history = model.fit(x_train, y_train,
+                    epochs=200,
+                    batch_size=16,
+                    validation_data=(x_test, y_test),
+                    callbacks=[checkpoint, earlystopping])
+
 print('[INFO] Model Training Completed')
-val_loss = history.history['val_loss'][-1]
-save_dir = os.path.split(path_to_save)[0]
-model_name = os.path.split(path_to_save)[1]
-model_name = os.path.splitext(model_name)[0] + f'_val_loss_{val_loss:.3}.h5'
-path_to_save = os.path.join(save_dir, model_name)
-model.save(path_to_save)
-print(f'[INFO] Successfully Saved {path_to_save}')
+print(f'[INFO] Model Successfully Saved in /{path_to_save}')
+
+# Plot History
+metric_loss = history.history['loss']
+metric_val_loss = history.history['val_loss']
+metric_accuracy = history.history['accuracy']
+metric_val_accuracy = history.history['val_accuracy']
+
+# Construct a range object which will be used as x-axis (horizontal plane) of the graph.
+epochs = range(len(metric_loss))
+
+# Plot the Graph.
+plt.plot(epochs, metric_loss, 'blue', label=metric_loss)
+plt.plot(epochs, metric_val_loss, 'red', label=metric_val_loss)
+plt.plot(epochs, metric_accuracy, 'blue', label=metric_accuracy)
+plt.plot(epochs, metric_val_accuracy, 'green', label=metric_val_accuracy)
+
+# Add title to the plot.
+plt.title(str('Model Metrics'))
+
+# Add legend to the plot.
+plt.legend(['loss', 'val_loss', 'accuracy', 'val_accuracy'])
+
+# If the plot already exist, remove
+plot_png = os.path.exists('metrics.png')
+if plot_png:
+    os.remove('metrics.png')
+    plt.savefig('metrics.png', bbox_inches='tight')
+else:
+    plt.savefig('metrics.png', bbox_inches='tight')
+print('[INFO] Successfully Saved metrics.png')
