@@ -128,4 +128,9 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+# Data
 data
+# Plot
+metrics.png
+# Model
+model.h5
