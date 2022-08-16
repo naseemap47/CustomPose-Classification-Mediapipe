@@ -2,7 +2,7 @@ from keras.models import load_model
 import cv2
 import mediapipe as mp
 import numpy as np
-from utils import NormPoseLandmark
+from utils import NormPoseLandmark, min_max
 import pandas as pd
 
 
@@ -70,6 +70,8 @@ if result.pose_landmarks:
     # print(landmarks[0])
 
     data = pd.DataFrame(landmarks, columns=col_names)
+    data.to_csv('min_max_df.csv', encoding='utf-8', index=False)
+    # data = min_max(data)
     predict = model.predict(data)[0]
     print('prediction: ', predict)
     # class_id = np.argmax(predict, axis = 1)
