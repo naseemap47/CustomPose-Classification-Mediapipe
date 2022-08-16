@@ -1,57 +1,23 @@
-import numpy as np
+from matplotlib import pyplot as plt
 
 
-def get_pose_center(landmark_names, landmarks):
-    """Calculates pose center as point between hips."""
-    left_hip = landmarks[landmark_names.index('left_hip')]
-    right_hip = landmarks[landmark_names.index('right_hip')]
-    center = (left_hip + right_hip) * 0.5
-    return center
+def plot_metric(model_training_history, metric_name_1, metric_name_2, plot_name):
+    # Get metric values using metric names as identifiers.
+    metric_value_1 = model_training_history.history[metric_name_1]
+    metric_value_2 = model_training_history.history[metric_name_2]
 
+    # Construct a range object which will be used as x-axis (horizontal plane) of the graph.
+    epochs = range(len(metric_value_1))
 
-def get_pose_size(landmark_names, landmarks, torso_size_multiplier=2.5):
-    """Calculates pose size.
+    # Plot the Graph.
+    plt.plot(epochs, metric_value_1, 'blue', label=metric_name_1)
+    plt.plot(epochs, metric_value_2, 'red', label=metric_name_2)
 
-    It is the maximum of two values:
-      * Torso size multiplied by `torso_size_multiplier`
-      * Maximum distance from pose center to any pose landmark
-    """
+    # Add title to the plot.
+    plt.title(str(plot_name))
 
-    # This approach uses only 2D landmarks to compute pose size.
-    landmarks = landmarks[:, :2]
+    # Add legend to the plot.
+    plt.legend()
 
-    # Hips center.
-    left_hip = landmarks[landmark_names.index('left_hip')]
-    right_hip = landmarks[landmark_names.index('right_hip')]
-    hips = (left_hip + right_hip) * 0.5
-
-    # Shoulders center.
-    left_shoulder = landmarks[landmark_names.index('left_shoulder')]
-    right_shoulder = landmarks[landmark_names.index('right_shoulder')]
-    shoulders = (left_shoulder + right_shoulder) * 0.5
-
-    # Torso size as the minimum body size.
-    torso_size = np.linalg.norm(shoulders - hips)
-
-    # Max dist to pose center.
-    pose_center = get_pose_center(landmark_names, landmarks)
-    max_dist = np.max(np.linalg.norm(landmarks - pose_center, axis=1))
-
-    return max(torso_size * torso_size_multiplier, max_dist)
-
-
-def NormPoseLandmark(landmark_names, landmarks):
-
-    # Normalize translation.
-    pose_center = get_pose_center(landmark_names, landmarks)
-    landmarks -= pose_center
-
-    # Normalize scale.
-    pose_size = get_pose_size(
-        landmark_names, landmarks, torso_size_multiplier=2.5)
-    landmarks /= pose_size
-
-    # Multiplication by 100 is not required, but makes it eaasier to debug.
-    # landmarks *= 100
-
-    return landmarks
+    plt.savefig(f'{metric_name_1}.png', bbox_inches='tight')
+    print(f'[INFO] Successfully Saved {metric_name_1}.png')
