@@ -6,6 +6,7 @@ Creating a Custom pose classification using Mediapipe with help of OpenCV
 
 
 Using this Custom Pose Classification I created a Yoga Pose Classification
+### Clone this Repository
 ```
 git clone https://github.com/naseemap47/CustomPose-Classification-Mediapipe.git
 cd CustomPose-Classification-Mediapipe
@@ -51,6 +52,7 @@ python3 inference.py --model model.h5 --conf 0.75 --source 0  # web-cam
 **To Exit Window - Press Q-key**
 
 ## Custom Pose Classification
+### Clone this Repository
 ```
 git clone https://github.com/naseemap47/CustomPose-Classification-Mediapipe.git
 cd CustomPose-Classification-Mediapipe
