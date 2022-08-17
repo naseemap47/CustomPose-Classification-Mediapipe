@@ -1,8 +1,9 @@
-# YogaPose-Classification-Mediapipe
-Creating a Yoga pose classification using Mediapipe with help of OpenCV
-
-## Custom Pose Classification
+# CustomPose-Classification-Mediapipe
+Creating a Custom pose classification using Mediapipe with help of OpenCV
+### Clone this Repository
 ```
+git clone https://github.com/naseemap47/CustomPose-Classification-Mediapipe.git
+cd CustomPose-Classification-Mediapipe
 git checkout custom
 ```
 ### 1.Take your Custom Pose Dataset
