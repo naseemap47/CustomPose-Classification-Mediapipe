@@ -22,8 +22,8 @@ Open **inference.py**
 change **Line-43**: 
 According to your Class Names, Write Class Order
 ```
-python3 inference.py -i <path_to_test_image> -m <path_to_saved_model>
+python3 inference.py --model <path_to_model> --conf <model_prediction_confidence> --source <image or video or web-cam>
 ```
-Show Predicted Pose Class on Test Image
+Show Predicted Pose Class on Test Image or Video or Web-cam
 
 **To Exit Window - Press Q-key**
