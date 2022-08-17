@@ -35,13 +35,15 @@ python3 poseModel.py -i data.csv -o model.h5
 ```
 Model will saved in **<path_to_save_model>** and Model Metrics saved in **metrics.png**
 ### 4.Inference
-Show Predicted Pose Class on Test Image
+Show Predicted Pose Class on Test Image or Video or Web-cam
 ```
-python3 inference.py -i <path_to_test_image> -m <path_to_saved_model>
+python3 inference.py --model <path_to_model> --conf <model_prediction_confidence> --source <image or video or web-cam>
 ```
 Example:
 ```
-python3 inference.py -i data/test/test.jpg -m model.h5
+python3 inference.py --model model.h5 --conf 0.75 --source data/test/image.jpg
+python3 inference.py --model model.h5 --conf 0.75 --source data/test/video.mp4
+python3 inference.py --model model.h5 --conf 0.75 --source 0  # web-cam
 ```
 **To Exit Window - Press Q-key**
 
@@ -66,8 +68,8 @@ Open **inference.py**
 change **Line-43**: 
 According to your Class Names, Write Class Order
 ```
-python3 inference.py -i <path_to_test_image> -m <path_to_saved_model>
+python3 inference.py --model <path_to_model> --conf <model_prediction_confidence> --source <image or video or web-cam>
 ```
-Show Predicted Pose Class on Test Image
+Show Predicted Pose Class on Test Image or Video or Web-cam
 
 **To Exit Window - Press Q-key**
