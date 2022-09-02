@@ -5,7 +5,7 @@ Creating a Custom pose classification using Mediapipe with help of OpenCV
 **(Yoga Poses Dataset)**
 
 
-Using this Custom Pose Classification I created a Yoga Pose Classification
+Using this Custom Pose Classification, I created a Yoga Pose Classification
 ### Clone this Repository
 ```
 git clone https://github.com/naseemap47/CustomPose-Classification-Mediapipe.git
@@ -19,6 +19,21 @@ About Dataset:
 - 5 Classes: **Chair, Cobra, Dog, Tree and Warrior**
 - Contain Train and Test data
 - Combain both Train and Test data
+
+**Dataset Structure:**
+```
+├── Dataset
+│   ├── Chair
+│   │   ├── 1.jpg
+│   │   ├── 2.jpg
+│   │   ├── ...
+│   ├── Cobra
+│   │   ├── 1.jpg
+│   │   ├── 2.jpg
+│   │   ├── ...
+.   .
+.   .
+```
 
 ### 2.Create Landmark Dataset for each Classes
 ```
@@ -59,6 +74,20 @@ cd CustomPose-Classification-Mediapipe
 git checkout custom
 ```
 ### 1.Take your Custom Pose Dataset
+**Dataset Structure:**
+```
+├── Dataset
+│   ├── Pose_1
+│   │   ├── 1.jpg
+│   │   ├── 2.jpg
+│   │   ├── ...
+│   ├── Pose_2
+│   │   ├── 1.jpg
+│   │   ├── 2.jpg
+│   │   ├── ...
+.   .
+.   .
+```
 ### 2.Create Landmark Dataset for each Classes
 CSV file will be saved in **<path_to_save_csv>**
 ```
