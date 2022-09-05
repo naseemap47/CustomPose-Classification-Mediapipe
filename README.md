@@ -16,6 +16,11 @@ Using this Custom Pose Classification, I created a Yoga Pose Classification
 git clone https://github.com/naseemap47/CustomPose-Classification-Mediapipe.git
 cd CustomPose-Classification-Mediapipe
 ```
+### Install Dependency
+```
+pip3 install -r requirements.txt
+```
+
 ### 1.Download Dataset: 
 ```
 wget -O yoga_poses.zip http://download.tensorflow.org/data/pose_classification/yoga_poses.zip
