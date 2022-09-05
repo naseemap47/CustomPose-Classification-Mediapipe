@@ -1,6 +1,11 @@
 # CustomPose-Classification-Mediapipe
 Creating a Custom pose classification using Mediapipe with help of OpenCV
 
+<p align="center">
+  <img src='https://miro.medium.com/max/434/1*iy_qNrpaHWkfJTZ3TrAuKA.png'/>
+</p>
+
+
 ## Demo
 **(Yoga Poses Dataset)**
 
