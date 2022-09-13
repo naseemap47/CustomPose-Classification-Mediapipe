@@ -143,7 +143,7 @@ else:
 
     # Write Video
     if save:
-        result = cv2.VideoWriter('output.avi', 
+        out_video = cv2.VideoWriter('output.avi', 
                             cv2.VideoWriter_fourcc(*'MJPG'),
                             10, (source_width, source_height))
 
@@ -200,7 +200,7 @@ else:
             )
         # Write Video
         if save:
-            result.write(img)
+            out_video.write(img)
 
         cv2.imshow('Output Image', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -208,7 +208,7 @@ else:
     
     cap.release()
     if save:
-        result.release()
+        out_video.release()
         print("[INFO] Out video Saved as 'output.avi'")
     cv2.destroyAllWindows()
     print('[INFO] Inference on Videostream is Ended...')
