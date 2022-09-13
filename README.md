@@ -80,15 +80,30 @@ python3 poseModel.py -i data.csv -o model.h5
 ```
 Model will saved in **<path_to_save_model>** and Model Metrics saved in **metrics.png**
 ### 4.Inference
-Show Predicted Pose Class on Test Image or Video or Web-cam
+Show Predicted Pose Class on Test Image or Video or Web-cam <br>
+**To Save:**
+ - `--save`: It will save Images (on **ImageOutput** Dir) or Videos ("**output.avi**")
 ```
-python3 inference.py --model <path_to_model> --conf <model_prediction_confidence> --source <image or video or web-cam>
+python3 inference.py --model <path_to_model> \
+                     --conf <model_prediction_confidence> \
+                     --source <image or video or web-cam>
+
+# to save
+python3 inference.py --model <path_to_model> \
+                     --conf <model_prediction_confidence> \
+                     --source <image or video or web-cam> \
+                     --save
 ```
 Example:
 ```
 python3 inference.py --model model.h5 --conf 0.75 --source data/test/image.jpg
 python3 inference.py --model model.h5 --conf 0.75 --source data/test/video.mp4
 python3 inference.py --model model.h5 --conf 0.75 --source 0  # web-cam
+
+# to save
+python3 inference.py --model model.h5 --conf 0.75 --source data/test/image.jpg --save
+python3 inference.py --model model.h5 --conf 0.75 --source data/test/video.mp4 --save
+python3 inference.py --model model.h5 --conf 0.75 --source 0 --save # web-cam
 ```
 **To Exit Window - Press Q-key**
 
@@ -128,9 +143,19 @@ python3 poseModel.py -i <path_to_save_csv> -o <path_to_save_model>
 Open **inference.py**
 
 change **Line-43**: 
-According to your Class Names, Write Class Order
+According to your Class Names, Write Class Order <br>
+**To Save:**
+ - `--save`: It will save Images (on **ImageOutput** Dir) or Videos ("**output.avi**")
 ```
-python3 inference.py --model <path_to_model> --conf <model_prediction_confidence> --source <image or video or web-cam>
+python3 inference.py --model <path_to_model> \
+                     --conf <model_prediction_confidence> \
+                     --source <image or video or web-cam> \
+                     
+# to save
+python3 inference.py --model <path_to_model> \
+                     --conf <model_prediction_confidence> \
+                     --source <image or video or web-cam> \
+                     --save
 ```
 Show Predicted Pose Class on Test Image or Video or Web-cam
 
