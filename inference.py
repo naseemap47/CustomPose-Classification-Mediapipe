@@ -124,7 +124,7 @@ if source.endswith(('.jpg', '.jpeg', '.png')):
         img_full_name = os.path.split(path_to_img)[1]
         img_name = os.path.splitext(img_full_name)[0]
         path_to_save_img = f'ImageOutput/{img_name}.jpg'
-        cv2.imwrite(f'{path_to_save_img}')
+        cv2.imwrite(f'{path_to_save_img}', img)
         print(f'[INFO] Output Image Saved in {path_to_save_img}')
 
     cv2.imshow('Output Image', img)
