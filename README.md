@@ -5,12 +5,27 @@ Creating a Custom pose classification using Mediapipe with help of OpenCV
   <img src='https://miro.medium.com/max/434/1*iy_qNrpaHWkfJTZ3TrAuKA.png'/>
 </p>
 
+**Sample Video Output:**<br>
+<p align="center">
+  <img src='https://user-images.githubusercontent.com/88816150/189837009-a7344d98-d795-4bc4-b1fd-640e772221f7.gif' alt="animated" />
+</p>
 
-## Demo
-**(Yoga Poses Dataset)**
+**Sample Image Output:**<br>
 
+<div class="row">
+  <div class="column">
+    <img src="https://github.com/naseemap47/CustomPose-Classification-Mediapipe/blob/master/ImageOutput/chair.jpg">
+    <img src="https://github.com/naseemap47/CustomPose-Classification-Mediapipe/blob/master/ImageOutput/cobra.jpg">
+    <img src="https://github.com/naseemap47/CustomPose-Classification-Mediapipe/blob/master/ImageOutput/dog.jpg">
+  </div>
+  <div class="column">
+  <img src="https://github.com/naseemap47/CustomPose-Classification-Mediapipe/blob/master/ImageOutput/tree.jpg">
+  <img src="https://github.com/naseemap47/CustomPose-Classification-Mediapipe/blob/master/ImageOutput/warrior.jpg">
+  </div>
+</div>
 
-Using this Custom Pose Classification, I created a Yoga Pose Classification
+# (Demo) Let's Get Started...
+Using this Custom Pose Classification, I am going to Create a Yoga Pose Classification. Using **Yoga Poses Dataset**.
 ### Clone this Repository
 ```
 git clone https://github.com/naseemap47/CustomPose-Classification-Mediapipe.git
@@ -21,7 +36,8 @@ cd CustomPose-Classification-Mediapipe
 pip3 install -r requirements.txt
 ```
 
-### 1.Download Dataset: 
+### 1.Download Dataset:
+**Yoga Poses Dataset:**
 ```
 wget -O yoga_poses.zip http://download.tensorflow.org/data/pose_classification/yoga_poses.zip
 ```
@@ -76,7 +92,7 @@ python3 inference.py --model model.h5 --conf 0.75 --source 0  # web-cam
 ```
 **To Exit Window - Press Q-key**
 
-## Custom Pose Classification
+# Custom Pose Classification
 ### Clone this Repository
 ```
 git clone https://github.com/naseemap47/CustomPose-Classification-Mediapipe.git
