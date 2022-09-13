@@ -1,3 +1,4 @@
+import os
 from keras.models import load_model
 import cv2
 import mediapipe as mp
@@ -117,6 +118,15 @@ if source.endswith(('.jpg', '.jpeg', '.png')):
         (40, 50), cv2.FONT_HERSHEY_PLAIN,
         2, (255, 0, 255), 2
     )
+
+    if save:
+        os.makedirs('ImageOutput', exist_ok=True)
+        img_full_name = os.path.split(path_to_img)[1]
+        img_name = os.path.splitext(img_full_name)[0]
+        path_to_save_img = f'ImageOutput/{img_name}.jpg'
+        cv2.imwrite(f'{path_to_save_img}')
+        print(f'[INFO] Output Image Saved in {path_to_save_img}')
+
     cv2.imshow('Output Image', img)
     if cv2.waitKey(0) & 0xFF == ord('q'):
         cv2.destroyAllWindows()
@@ -199,5 +209,6 @@ else:
     cap.release()
     if save:
         result.release()
+        print("[INFO] Out video Saved as 'output.avi'")
     cv2.destroyAllWindows()
     print('[INFO] Inference on Videostream is Ended...')
