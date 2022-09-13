@@ -1,3 +1,4 @@
+import os
 from keras.models import load_model
 import cv2
 import mediapipe as mp
@@ -14,11 +15,14 @@ ap.add_argument("-c", "--conf", type=float, required=True,
                 help="min prediction conf to detect pose class (0<conf<1)")
 ap.add_argument("-i", "--source", type=str, required=True,
                 help="path to sample image")
+ap.add_argument("--save", action='store_true',
+                help="Save video")
 
 args = vars(ap.parse_args())
 source = args["source"]
 path_saved_model = args["model"]
 threshold = args["conf"]
+save = args['save']
 
 ##############
 torso_size_multiplier = 2.5
@@ -114,6 +118,15 @@ if source.endswith(('.jpg', '.jpeg', '.png')):
         (40, 50), cv2.FONT_HERSHEY_PLAIN,
         2, (255, 0, 255), 2
     )
+
+    if save:
+        os.makedirs('ImageOutput', exist_ok=True)
+        img_full_name = os.path.split(path_to_img)[1]
+        img_name = os.path.splitext(img_full_name)[0]
+        path_to_save_img = f'ImageOutput/{img_name}.jpg'
+        cv2.imwrite(f'{path_to_save_img}', img)
+        print(f'[INFO] Output Image Saved in {path_to_save_img}')
+
     cv2.imshow('Output Image', img)
     if cv2.waitKey(0) & 0xFF == ord('q'):
         cv2.destroyAllWindows()
@@ -125,6 +138,15 @@ else:
         source = int(source)
 
     cap = cv2.VideoCapture(source)
+    source_width = int(cap.get(3))
+    source_height = int(cap.get(4))
+
+    # Write Video
+    if save:
+        result = cv2.VideoWriter('output.avi', 
+                            cv2.VideoWriter_fourcc(*'MJPG'),
+                            10, (source_width, source_height))
+
     while True:
         success, img = cap.read()
         if not success:
@@ -176,8 +198,17 @@ else:
                 (40, 50), cv2.FONT_HERSHEY_PLAIN,
                 2, (255, 0, 255), 2
             )
+        # Write Video
+        if save:
+            result.write(img)
+
         cv2.imshow('Output Image', img)
         if cv2.waitKey(1) & 0xFF == ord('q'):
-            cv2.destroyAllWindows()
             break
+    
+    cap.release()
+    if save:
+        result.release()
+        print("[INFO] Out video Saved as 'output.avi'")
+    cv2.destroyAllWindows()
     print('[INFO] Inference on Videostream is Ended...')
